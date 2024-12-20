@@ -10,7 +10,7 @@
 * Written in portable C (C99)
 * Zlib license: free for any project, including commercial ones;
 * Cross-platform : *Windows* and *X11* (any system running Xorg)
-* Native : Uses `wGL` and `GLX`, `winmm` and `ALSA`.
+* Handles I/O (Keyboard and Mouse inputs)
 
 Homepage hosted at : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl).
 

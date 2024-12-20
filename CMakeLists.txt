@@ -5,30 +5,30 @@ project(VDL C)
 # Create the shared library target
 add_library(VDL SHARED
         # Source
-	src/system/gnu_linux/linux_audio.c
+        src/system/gnu_linux/linux_audio.c
         src/system/gnu_linux/linux_video.c
-	src/system/terminal.c
+        src/system/terminal.c
         src/system/Windows/WIN_audio.c
         src/system/Windows/WIN_video.c
-	src/system/Windows/WIN_io.c
+        src/system/Windows/WIN_io.c
 
         # Headers
-	include/terminal.h
+        include/terminal.h
         include/audio.h
         include/vdl.h
 
-	# STB
-	include/stb_easy_font.h
-	include/stb_image.h
+        # STB
+        include/stb_easy_font.h
+        include/stb_image.h
 
 )
 
-if(UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE)
   find_package(OpenGL REQUIRED)
   target_link_libraries(VDL PRIVATE X11 OpenGL::GL m)
 elseif(WIN32)
   target_link_libraries(VDL winmm opengl32 gdi32)
-endif()
+endif ()
 
 add_executable(vdl_test main.c)
 
@@ -37,7 +37,7 @@ target_link_libraries(vdl_test PRIVATE VDL m)
 
 if (UNIX AND NOT APPLE)
 	  target_link_libraries(vdl_test PRIVATE OpenGL::GL X11)
-endif()
+endif ()
 
 #[[ 
 Copyright (C) 2024 Ellouze Adam <elzadam11@tutamail.com>
