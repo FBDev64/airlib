@@ -11,11 +11,14 @@
 * Zlib license: free for any project, including commercial ones;
 * Cross-platform : *Windows* and *X11* (any system running Xorg)
 * Handles I/O (Keyboard and Mouse inputs)
+* Handles graphics (window creation, frame buffer, image drawing)
+* Handles audio (play sound, stop sound)
 
-Homepage hosted at : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl).
+Homepage : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl), hosted by Neocities.
 
 ## Install
-
+
+
 ### UNIX
 ```bash
 git clone https://github.com/AdamOnAir/pkg # pkg is the repo containing VDL installer
