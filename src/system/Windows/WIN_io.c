@@ -12,11 +12,9 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
         KBDLLHOOKSTRUCT* pStruct = (KBDLLHOOKSTRUCT*)lParam;
 
         if (wParam == WM_KEYDOWN) {
-            printf("Key pressed: %d\n", pStruct->vkCode);
             keyStates[pStruct->vkCode] = 1;
         }
         else if (wParam == WM_KEYUP) {
-            printf("Key released: %d\n", pStruct->vkCode);
             keyStates[pStruct->vkCode] = 0;
         }
     }
@@ -27,7 +25,6 @@ __declspec(dllexport) int vdl_isKeyPressed(KB_KEY key) {
     static int initialized = 0;
     if (!initialized) {
         keyHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, GetModuleHandle(NULL), 0);
-        printf("Hook installed: %p\n", keyHook);
         initialized = 1;
     }
     return keyStates[(int)key];

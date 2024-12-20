@@ -119,6 +119,12 @@ __declspec(dllexport) void createFramebuffer(int width, int height) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    // Flip the framebuffer texture coordinates
+    float flippedTexCoords[] = {0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+    glTexCoordPointer(2, GL_FLOAT, 0, flippedTexCoords);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameBufferTexture, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -177,10 +183,10 @@ __declspec(dllexport) void drawTexture(GLuint textureID, float x, float y, float
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f); glVertex2f(x, y);
-    glTexCoord2f(1.0f, 1.0f); glVertex2f(x + width, y);
-    glTexCoord2f(1.0f, 0.0f); glVertex2f(x + width, y + height);
-    glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y + height);
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y);
+    glTexCoord2f(1.0f, 0.0f); glVertex2f(x + width, y);
+    glTexCoord2f(1.0f, 1.0f); glVertex2f(x + width, y + height);
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(x, y + height);
     glEnd();
 
     glPopAttrib();
@@ -188,18 +194,21 @@ __declspec(dllexport) void drawTexture(GLuint textureID, float x, float y, float
     glDisable(GL_TEXTURE_2D);
 }
 
-__declspec(dllexport) void drawText(float x, float y, const char* text, unsigned char* color) {
+__declspec(dllexport) void drawText(float x, float y, const char* text, unsigned char* color, float scale) {
     glPushMatrix();
     glPushAttrib(GL_ALL_ATTRIB_BITS);
 
+    // Set the text color using the provided RGB values
     glColor3ub(color[0], color[1], color[2]);
 
     static char vertex_buffer[99999];
     stb_easy_font_spacing(0.6f);
-    float scale = 1.2f;
+
+    // Use provided scale or default to 1.2f if 0
+    float textScale = (scale > 0) ? scale : 1.2f;
 
     glTranslatef(x, y, 0);
-    glScalef(scale, scale, 1.0f);
+    glScalef(textScale, textScale, 1.0f);
 
     int num_quads = stb_easy_font_print(0, 0, (char*)text, NULL, vertex_buffer, sizeof(vertex_buffer));
 
@@ -219,7 +228,7 @@ __declspec(dllexport) void destroy(void) {
     DestroyWindow(hwnd);
 }
 
-__declspec(dllexport) void drawButton(float x, float y, float width, float height, const char* label) {
+__declspec(dllexport) void drawButton(float x, float y, float width, float height, const char* label, float scale) {
     glBegin(GL_QUADS);
     glVertex2f(x, y);
     glVertex2f(x + width, y);
@@ -230,7 +239,8 @@ __declspec(dllexport) void drawButton(float x, float y, float width, float heigh
     float textX = x + (width - strlen(label) * 8) / 2;
     float textY = y + (height - 12) / 2;
     unsigned char textColor[3] = {0, 0, 0};
-    drawText(textX, textY, label, textColor);
+
+    drawText(textX, textY, label, textColor, scale);
 }
 
 __declspec(dllexport) int isButtonClicked(float x, float y, float width, float height) {

@@ -91,7 +91,7 @@ typedef struct Win {
    void (*pollEvents)(void);
    void (*swapBuffers)(void);
    int (*shouldClose)(void);
-   void (*drawText)(float x, float y, const char* text, unsigned char* color);
+   void (*drawText)(float x, float y, const char* text, unsigned char* color, float scale);
    void (*drawButton)(float x, float y, float width, float height, const char* label);
    void (*destroy)(void);
    int (*isButtonClicked)(float x, float y, float width, float height);
