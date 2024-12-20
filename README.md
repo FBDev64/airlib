@@ -14,7 +14,7 @@
 * Handles graphics (window creation, frame buffer, image drawing)
 * Handles audio (play sound, stop sound)
 
-Homepage hosted at : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl).
+Homepage : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl), hosted by Neocities.
 
 ## Install
 
