@@ -1,36 +1,36 @@
 #include "include/vdl.h"
 #include <GL/gl.h>
+#include <stdio.h>
+
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 
 int main() {
     Win* window = createWindowInstance();
-    window->create(500, 300, "VDL Test");
+    window->create(WINDOW_WIDTH, WINDOW_HEIGHT, "3D Game Engine Demo");
+    window->createFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    unsigned char textColor[3] = {34, 84, 2};
-    int isPlaying = 0;
+    // Load texture and verify it loaded successfully
+    GLuint textureID = window->loadTexture("C:/Users/Adam/Pictures/ness.png");
+    if (!textureID) {
+        printf("Texture failed to load\n");
+    }
 
     while (!window->shouldClose()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // Clear the screen first
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        window->drawText(10, 10, "ESC to quit", textColor);
-        window->drawText(10, 20, "A to play sound", textColor);
+        window->beginFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        glColor3f(1.0f, 1.0f, 1.0f);
+        window->drawTexture(textureID, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        if (window->keyboard->isKeyPressed(KB_KEY_ESCAPE)) {
-            window->destroy();
-        }
+        window->endFramebuffer();
 
-        if (window->keyboard->isKeyPressed(KB_KEY_A) && !isPlaying) {
-            window->playSound("C:/Users/Adam/Music/rickroll.wav");
-            isPlaying = 1;
-        }
+        // Draw framebuffer to screen
+        window->drawTexture(window->getFramebufferTexture(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        if (!window->keyboard->isKeyPressed(KB_KEY_A)) {
-            isPlaying = 0;
-        }
-
-        window->pollEvents();
         window->swapBuffers();
+        window->pollEvents();
     }
 
     window->destroy();

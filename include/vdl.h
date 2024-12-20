@@ -100,6 +100,10 @@ typedef struct Win {
    GLuint (*loadTexture)(const char* filename);
    void (*drawTexture)(GLuint textureID, float x, float y, float width, float height);
    void (*checkGLError)(void);
+   void (*createFramebuffer)(int width, int height);
+   void (*beginFramebuffer)(int width, int height);
+   void (*endFramebuffer)(void);
+   GLuint (*getFramebufferTexture)(void);
 
    // Audio
    void (*playSound)(const char *filename);
