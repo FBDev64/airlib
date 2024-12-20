@@ -188,7 +188,6 @@ __declspec(dllexport) void drawTexture(GLuint textureID, float x, float y, float
     glDisable(GL_TEXTURE_2D);
 }
 
-
 __declspec(dllexport) void drawText(float x, float y, const char* text, unsigned char* color) {
     glPushMatrix();
     glPushAttrib(GL_ALL_ATTRIB_BITS);
