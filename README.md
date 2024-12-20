@@ -1,6 +1,6 @@
-![QOI Logo](https://qoiformat.org/qoi-logo.svg)
+![VDL Logo](https://qoiformat.org/qoie-logo.svg)
 
-# QOI - The “Quite OK Image Format” for fast, lossless image compression
+# VDL - The “Video Development Library”
 
 ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 [![Licence](https://img.shields.io/static/v1.svg?label=lLicense&message=ZLib&color=blue&style=for-the-badge)](./LICENSE)
