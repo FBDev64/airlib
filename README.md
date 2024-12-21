@@ -1,7 +1,6 @@
-<p style="text-align: center;">
-![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
-![OpenGL](https://img.shields.io/badge/OpenGL-%23FFFFFF.svg?style=for-the-badge&logo=opengl)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+<p align="center">
+    <a><img alt="C" src="https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white" /></a>
+    <a>><img alt="OpenGL" src="https://img.shields.io/badge/OpenGL-%23FFFFFF.svg?style=for-the-badge&logo=opengl"></a?>
 </p>
 
 # VDL
@@ -15,7 +14,7 @@
 * Cross-platform : *Windows* and *X11* (any system running Xorg)
 * Handles I/O (Keyboard and Mouse inputs)
 * Handles graphics (window creation, frame buffer, image drawing)
-* Handles audio (play sound, stop sound)
+* Handles audio (play sound, stophttps://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white sound)
 
 Homepage : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl), hosted by Neocities.
 
