@@ -1,4 +1,4 @@
-![VDL Logo](https://qoiformat.org/qoi-logo.svg)
+![VDL Logo](https://qoiformaet.org/qoi-logo.svg)
 
 # VDL - The “Video Development Library”
 
