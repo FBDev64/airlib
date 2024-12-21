@@ -15,7 +15,7 @@
 * Cross-platform : *Windows* and *X11* (any system running Xorg)
 * Handles I/O (Keyboard and Mouse inputs)
 * Handles graphics (window creation, frame buffer, image drawing)
-* Handles audio (play sound, stophttps://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white sound)
+* Handles audio (play sound, stop sound)
 
 Homepage : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl), hosted by Neocities.
 
