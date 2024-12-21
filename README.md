@@ -1,7 +1,7 @@
-# VDL
-
 ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 ![OpenGL](https://img.shields.io/badge/OpenGL-white?logo=OpenGL&style=for-the-badge)
+
+## VDL
 
 **V**ideo **D**evelopment **L**ibrary is a low-level, cross-platform development library for OpenGL written in portable C (C99).
 
