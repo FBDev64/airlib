@@ -4,6 +4,10 @@
     <a><img alt="linux" src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
 </p>
 
+<p align="center">
+    <a><img alt="logo" src="https://adamonair.neocities.org/vdl/logo.svg" /></a>
+</p>
+
 # VDL
 
 **V**ideo **D**evelopment **L**ibrary is a low-level, cross-platform development library for OpenGL written in portable C (C99).
