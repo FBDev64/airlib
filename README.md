@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-    <a><img alt="logo" src="https://adamonair.neocities.org/vdl/logo.svg" /></a>
+        <a><img alt="logo" src="https://adamonair.neocities.org/vdl/VDL-logo.svg" /></a>
 </p>
 
 # VDL
