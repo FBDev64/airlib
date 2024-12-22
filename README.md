@@ -39,8 +39,6 @@ sudo ./installer.sh
 
 The following code is an demo of VDL usage.
 ```c
-#include <stdbool.h>
-
 #include "include/vdl.h"
 #include <GL/gl.h>
 #include <stdio.h>
