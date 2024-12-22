@@ -4,7 +4,6 @@
     <a><img alt="linux" src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
 </p>
 
-
 # VDL
 
 **V**ideo **D**evelopment **L**ibrary is a low-level, cross-platform development library for OpenGL written in portable C (C99).
@@ -36,11 +35,63 @@ sudo ./installer.sh
 - Download `setup-vdl.exe`
 - Execute
 
+## Demo
+
+The following code is an demo of VDL usage.
+```c
+#include <stdbool.h>
+
+#include "include/vdl.h"
+#include <GL/gl.h>
+#include <stdio.h>
+
+#define WINDOW_WIDTH 600
+#define WINDOW_HEIGHT 800
+
+int main() {
+    const Win *window = createWindowInstance();
+
+    window->create(WINDOW_WIDTH, WINDOW_HEIGHT, "VDL Demo");
+    window->createFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    GLuint textureID = window->loadTexture("assets/ness.png"); // texture LOADED
+    if (!textureID) {
+        printf("Failed to load texture\n");
+        return 1;
+    }
+
+    while (!window->shouldClose()) { // () in shouldClose is very important
+        // Clear the screen first
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // text color
+        unsigned char textColor[3] = {0, 0, 254};
+        window->drawText(10, 10, "VDL drew this;", textColor, 2.0f); // scaled up text : 1.0 if default
+
+        window->drawTexture(textureID, 100, 100, 200, 200); // texture DRAWN
+
+        // key press
+        window->drawText(10, 350, "Press E to make a button appear", textColor, 2.0f);
+
+        if (window->keyboard->isKeyPressed(KB_KEY_E)) {
+            window->drawButton(100, 300, 100, 50, "Play RUSH E");
+        }
+
+        // Draw framebuffer to screen
+        window->drawTexture(window->getFramebufferTexture(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        window->swapBuffers();
+        window->pollEvents();
+    }
+
+    window->destroy();
+    return 0;
+}
+```
+
 ## License
 
-Distribute, modify and use freely under the terms of the [ZLib License](./LICENSE).
-
-<!--
+```text
 Copyright (C) 2024 Ellouze Adam <elzadam11@tutamail.com>
   
 This software is provided 'as-is', without any express or implied
@@ -58,4 +109,4 @@ freely, subject to the following restrictions:
 2. Altered source versions must be plainly marked as such, and must not be
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
--->
+```
