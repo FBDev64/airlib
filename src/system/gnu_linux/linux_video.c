@@ -1,11 +1,4 @@
-#if defined(__linux__)
-
-#define STBI_NO_SIMD
-#define STB_IMAGE_IMPLEMENTATION
-#include "../../../include/stb_image.h"
-#include "../../../include/stb_easy_font.h"
-
-#include "../../../include/video.h"
+#ifdef __linux__
 
 #include <X11/Xlib.h>
 #include <GL/glx.h>
@@ -14,16 +7,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_NO_SIMD
+#include "../../../include/stb_image.h"
+#include "../../../include/stb_easy_font.h"
+
+#include "../../../include/vdl.h"
+#include "../../../include/audio.h"
+
 #ifndef GL_CLAMP_TO_EDGE
-#define GL_CLAMP_TO_EDGE 0x812F
+#define GL_CLAMP_TO_EDGE
 #endif
 
-// Global variables for window and OpenGL
-static Display* display;
+// Global variables
+static Display *display;
 static Window window;
 static GLXContext glxContext;
 static Atom wmDeleteMessage;
 static int should_close = 0;
+static GLuint frameBuffer;
+static GLuint frameBufferTexture;
+
+// Function pointers for framebuffer operations
+PFNGLGENFRAMEBUFFERSPROC glGenFramebuffers;
+PFNGLBINDFRAMEBUFFERPROC glBindFramebuffer;
+PFNGLFRAMEBUFFERTEXTURE2DPROC glFramebufferTexture2D;
+
+void pollEvents(void) {
+    XEvent event;
+    while (XPending(display)) {
+        XNextEvent(display, &event);
+        if (event.type == ClientMessage) {
+            should_close = 1;
+        }
+    }
+}
+
+int shouldClose(void) {
+    return should_close;
+}
 
 void create(int width, int height, const char* title) {
     display = XOpenDisplay(NULL);
@@ -77,25 +99,46 @@ void create(int width, int height, const char* title) {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-__attribute__((visibility("default"))) void pollEvents(void) {
-    while (XPending(display)) {
-        XEvent event;
-        XNextEvent(display, &event);
-        if (event.type == ClientMessage && (Atom)event.xclient.data.l[0] == wmDeleteMessage) {
-            should_close = 1;
-        }
-    }
-}
-
-__attribute__((visibility("default"))) int shouldClose(void) {
-    return should_close;
-}
-
-__attribute__((visibility("default"))) void swapBuffers(void) {
+void swapBuffers(void) {
     glXSwapBuffers(display, window);
 }
 
-__attribute__((visibility("default"))) GLuint loadTexture(const char* filename) {
+void createFramebuffer(int width, int height) {
+    glGenFramebuffers(1, &frameBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+    glGenTextures(1, &frameBufferTexture);
+    glBindTexture(GL_TEXTURE_2D, frameBufferTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, frameBufferTexture, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void beginFramebuffer(int width, int height) {
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, width, height, 0, -1, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+void endFramebuffer(void) {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+GLuint getFramebufferTexture(void) {
+    return frameBufferTexture;
+}
+
+GLuint loadTexture(const char* filename) {
     int width, height, channels;
     unsigned char* imageData = stbi_load(filename, &width, &height, &channels, STBI_rgb_alpha);
     if (!imageData) {
@@ -115,12 +158,12 @@ __attribute__((visibility("default"))) GLuint loadTexture(const char* filename) 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 
     stbi_image_free(imageData);
-
     return textureID;
 }
 
-__attribute__((visibility("default"))) void drawTexture(GLuint textureID, float x, float y, float width, float height) {
+void drawTexture(GLuint textureID, float x, float y, float width, float height) {
     glPushAttrib(GL_CURRENT_BIT | GL_TEXTURE_BIT);
+
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -140,19 +183,24 @@ __attribute__((visibility("default"))) void drawTexture(GLuint textureID, float 
     glDisable(GL_TEXTURE_2D);
 }
 
-__attribute__((visibility("default"))) void drawText(float x, float y, const char* text, unsigned char* color) {
+void drawText(float x, float y, const char* text, unsigned char* color, float scale) {
     glPushMatrix();
     glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+    // Set the text color using the provided RGB values
     glColor3ub(color[0], color[1], color[2]);
 
     static char vertex_buffer[99999];
     stb_easy_font_spacing(0.6f);
-    float scale = 1.2f;
+
+    // Use provided scale or default to 1.2f if 0
+    float textScale = (scale > 0) ? scale : 1.2f;
 
     glTranslatef(x, y, 0);
-    glScalef(scale, scale, 1.0f);
+    glScalef(textScale, textScale, 1.0f);
 
     int num_quads = stb_easy_font_print(0, 0, (char*)text, NULL, vertex_buffer, sizeof(vertex_buffer));
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(2, GL_FLOAT, 16, vertex_buffer);
     glDrawArrays(GL_QUADS, 0, num_quads * 4);
@@ -162,14 +210,7 @@ __attribute__((visibility("default"))) void drawText(float x, float y, const cha
     glPopMatrix();
 }
 
-__attribute__((visibility("default"))) void destroy(void) {
-    glXMakeCurrent(display, None, NULL);
-    glXDestroyContext(display, glxContext);
-    XDestroyWindow(display, window);
-    XCloseDisplay(display);
-}
-
-__attribute__((visibility("default"))) void drawButton(float x, float y, float width, float height, const char* label) {
+void drawButton(float x, float y, float width, float height, const char* label) {
     glBegin(GL_QUADS);
     glVertex2f(x, y);
     glVertex2f(x + width, y);
@@ -180,26 +221,61 @@ __attribute__((visibility("default"))) void drawButton(float x, float y, float w
     float textX = x + (width - strlen(label) * 8) / 2;
     float textY = y + (height - 12) / 2;
     unsigned char textColor[3] = {0, 0, 0};
-    drawText(textX, textY, label, textColor);
+
+    float scale = 1.0f;
+
+    drawText(textX, textY, label, textColor, scale);
 }
 
-__attribute__((visibility("default"))) int isButtonClicked(float x, float y, float width, float height) {
-    // Button click functionality is not implemented for X11 here.
-    return 0;
+int isButtonClicked(float x, float y, float width, float height) {
+    XEvent event;
+    XNextEvent(display, &event);
+
+    if (event.type == ButtonPress) {
+        if (event.xbutton.x >= x && event.xbutton.x <= x + width &&
+            event.xbutton.y >= y && event.xbutton.y <= y + height) {
+            return 1;  // Button was clicked
+        }
+    }
+    return 0;  // Button was not clicked
 }
 
-__attribute__((visibility("default"))) Win* createWindowInstance(void) {
+void checkGLError() {
+    GLenum err;
+    while((err = glGetError()) != GL_NO_ERROR) {
+        printf("OpenGL error: 0x%X\n", err);
+    }
+}
+
+void destroy(void) {
+    glXMakeCurrent(display, None, NULL);
+    glXDestroyContext(display, glxContext);
+    XDestroyWindow(display, window);
+    XCloseDisplay(display);
+}
+
+Win* createWindowInstance(void) {
+    static Keyboard kb = {
+        .isKeyPressed = vdl_isKeyPressed
+    };
+
     static Win window = {
         .create = create,
         .pollEvents = pollEvents,
         .swapBuffers = swapBuffers,
         .shouldClose = shouldClose,
-        .destroy = destroy,
+        .drawText = drawText,
         .drawButton = drawButton,
         .isButtonClicked = isButtonClicked,
+        .destroy = destroy,
         .loadTexture = loadTexture,
         .drawTexture = drawTexture,
-        .drawText = drawText
+        .checkGLError = checkGLError,
+        .createFramebuffer = createFramebuffer,
+        .beginFramebuffer = beginFramebuffer,
+        .endFramebuffer = endFramebuffer,
+        .getFramebufferTexture = getFramebufferTexture,
+        .keyboard = &kb
     };
     return &window;
 }
