@@ -4,7 +4,6 @@ This is the planning document for the library.
 
 ## TO-DO list 
 
-- [ ] glX I/O (Keyboard)
-- [ ] glX click detection
-- [ ] Frame Buffer
-- [x] Windows Bugfix : sometimes key presses not detected
+- [X] glX I/O (Keyboard)
+- [X] glX click detection
+- [X] Frame Buffer
