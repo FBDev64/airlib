@@ -12,7 +12,7 @@
 
 * Written in portable C (C99)
 * [Zlib license](./LICENSE): free for any project, including commercial ones;
-* Cross-platform : *Windows* and *X11* (any system running Xorg)
+* Cross-platform : *Windows* and *X11*
 * Handles I/O (Keyboard and Mouse inputs)
 * Handles graphics (window creation, frame buffer, image drawing)
 * Handles audio (play sound, stop sound)
