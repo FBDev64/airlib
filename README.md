@@ -4,9 +4,9 @@
     <a><img alt="linux" src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">
 </p>
 
-# VDL
+# minivdl
 
-**V**ideo **D**evelopment **L**ibrary is a low-level, cross-platform development library for OpenGL written in portable C (C99).
+**Mini** **V**ideo **D**evelopment **L**ibrary is a low-level, cross-platform development library for OpenGL written in portable C (C99).
 
 ## Features
 
@@ -31,6 +31,7 @@ sudo ./installer.sh
 ```
 
 ### Windows
+
 - Go to [pkg](https://github.com/AdamOnAir/pkg/releases/)
 - Download `setup-vdl.exe`
 - Execute
