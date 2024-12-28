@@ -87,6 +87,26 @@ int main() {
 }
 ```
 
+## Supported platforms
+
+- Windows
+- GNU/Linux
+- Raspberry Pi
+
+### Backends
+
+Windows :
+```
+- wGL
+- WinAPI
+```
+
+GNU/Linux :
+```
+- glX
+- X11
+```
+
 ## License
 
 ```text
