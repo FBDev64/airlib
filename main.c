@@ -2,28 +2,40 @@
 #include <GL/gl.h>
 #include <stdio.h>
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 600
+#define WINDOW_HEIGHT 800
 
 int main() {
-    Win* window = createWindowInstance();
-    
-    window->create(WINDOW_WIDTH, WINDOW_HEIGHT, "VDL Game Engine Demo");
-    
-    //window->createFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
-    
-    while (!window->shouldClose()) {
+    const Win *window = createWindowInstance();
+
+    window->create(WINDOW_WIDTH, WINDOW_HEIGHT, "VDL Demo");
+    window->createFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    GLuint textureID = window->loadTexture("assets/ness.png"); // texture LOADED
+    if (!textureID) {
+        printf("Failed to load texture\n");
+        return 1;
+    }
+
+    while (!window->shouldClose()) { // () in shouldClose is very important
         // Clear the screen first
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //window->beginFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
+        // text color
+        unsigned char textColor[3] = {0, 0, 254};
+        window->drawText(10, 10, "VDL drew this;", textColor, 2.0f); // scaled up text : 1.0 if default
 
-        unsigned char redColor[3] = {255, 0, 0};  // Red text
-        // window->drawText(100, 100, "Hello World", redColor, 2.0f);  // Scaled up text
+        window->drawTexture(textureID, 100, 100, 200, 200); // texture DRAWN
 
-        // window->endFramebuffer();
+        // key press
+        window->drawText(10, 350, "Press E to make a button appear", textColor, 2.0f);
 
-        // window->drawTexture(window->getFramebufferTexture(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        if (window->keyboard->isKeyPressed(KB_KEY_E)) {
+            window->drawButton(100, 300, 100, 50, "Play RUSH E");
+        }
+
+        // Draw framebuffer to screen
+        window->drawTexture(window->getFramebufferTexture(), 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         window->swapBuffers();
         window->pollEvents();
