@@ -15,7 +15,7 @@
 * Cross-platform : *Windows* and *X11* (any system running Xorg)
 * Handles I/O (Keyboard and Mouse inputs)
 * Handles graphics (window creation, frame buffer, image drawing)
-* Handles audio (play sound, stop sound)
+* [Handles audio (play sound, stop sound)](###audio)
 
 Homepage : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl), hosted by Neocities.
 
@@ -86,6 +86,10 @@ int main() {
     return 0;
 }
 ```
+
+### Audio
+
+Using [miniaudio](https://github.com/mackron/miniaudio) is easier and works on all platforms, while built-in audio is only implemented for Windows.
 
 ## License
 
