@@ -94,6 +94,9 @@ int main() {
 - GNU/Linux
 - Raspberry Pi
 
+> [!IMPORTANT]  
+> vdl is having development difficulties on GNU/Linux and Raspberry Pi development. Support for both of these platforms will be sunsetted is no solution is found. Web (WASM) and Android will replace them.
+
 ### Backends
 
 Windows :
