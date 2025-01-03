@@ -1,2 +1,6 @@
+# For C detection
 *.h linguist-language=C
 *.c linguist-language=C
+
+# For diffs : treat pngs as binary
+*.png binary
