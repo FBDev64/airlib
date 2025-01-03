@@ -1,0 +1,4 @@
+C:/Users/Adam/CLionProjects/vdl/cmake-build-release/CMakeFiles/VDL.dir
+C:/Users/Adam/CLionProjects/vdl/cmake-build-release/CMakeFiles/vdl_test.dir
+C:/Users/Adam/CLionProjects/vdl/cmake-build-release/CMakeFiles/edit_cache.dir
+C:/Users/Adam/CLionProjects/vdl/cmake-build-release/CMakeFiles/rebuild_cache.dir

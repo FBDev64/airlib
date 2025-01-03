@@ -23,9 +23,6 @@ int main() {
 
         window->beginFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        unsigned char redColor[3] = {255, 0, 0};  // Red text
-        window->drawText(100, 100, "Hello World", redColor, 2.0f);  // Scaled up text
-
         window->drawTexture(textureID, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         window->endFramebuffer();
 
