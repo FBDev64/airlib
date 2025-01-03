@@ -1,7 +1,7 @@
 <p align="center">
     <a><img alt="C" src="https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white"></a>
     <a><img alt="OpenGL" src="https://img.shields.io/badge/OpenGL-%23FFFFFF.svg?style=for-the-badge&logo=opengl"></a>
-    <a><img alt="wasm" src="https://img.shields.io/badge/WASM-%23654FF0.svg?style=for-the-badge&logo=webassembly"></a>
+    <a><img alt="wasm" src="https://img.shields.io/badge/WASM-%23654FF0.svg?style=for-the-badge&logo=webassembly&logoColor=white"></a>
 </p>
 
 # VDL
