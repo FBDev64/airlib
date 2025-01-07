@@ -24,7 +24,7 @@ Homepage : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl), h
 
 ### UNIX
 ```bash
-git clone https://github.com/AdamOnAir/pkg # pkg is the repo containing VDL installer
+git clone https://github.com/3dgoose/pkg # pkg is the repo containing VDL installer
 cd pkg
 chmod +x installer.sh
 sudo ./installer.sh
