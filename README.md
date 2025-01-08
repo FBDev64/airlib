@@ -15,9 +15,8 @@
 * Cross-platform : *Windows* and *X11* (any system running Xorg)
 * Handles I/O (Keyboard and Mouse inputs)
 * Handles graphics (window creation, frame buffer, image drawing)
-* [Handles audio (play sound, stop sound)](#audio)
 
-Homepage : [adamonair.neocities.org/vdl](https://adamonair.neocities.org/vdl), hosted by Neocities.
+Homepage : [3dgoose.neocities.org/vdl](https://3dgoose.neocities.org/vdl), hosted by Neocities.
 
 ## Install
 
@@ -31,7 +30,7 @@ sudo ./installer.sh
 ```
 
 ### Windows
-- Go to [pkg](https://github.com/AdamOnAir/pkg/releases/)
+- Go to [pkg](https://github.com/3dgoose/pkg/releases/)
 - Download `setup-vdl.exe`
 - Execute
 
@@ -89,7 +88,7 @@ int main() {
 
 ### Audio
 
-Using [miniaudio](https://github.com/mackron/miniaudio) is easier and works on all platforms, while built-in audio is only implemented for Windows.
+Using [miniaudio](https://github.com/mackron/miniaudio) is easy and works on all platforms. 
 
 ## License
 
