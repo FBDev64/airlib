@@ -5,12 +5,12 @@
 
 # Goose Engine
 
-The Goose Engine is a 3D game engine written with SDL in C.
+The Goose Engine is a 2D game engine written with SDL in C.
 
 ## Features
 
 * [Zlib license](./LICENSE): free for any project, including commercial ones;
-* 3D rendering
+* 2D rendering and level editing
 * LUA scripting
 * Online Multiplayer
 
